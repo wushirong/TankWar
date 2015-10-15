@@ -10,6 +10,7 @@ import java.awt.event.*;
 public class TankClient extends Frame {
 	public static final int GAME_WIDTH = 800;
 	public static final int GAME_HEIGHT = 600;
+	
 	List<Missile> missile = new ArrayList<Missile>();
 	
 	Tank myTank = new Tank(50, 50, true, this);
@@ -21,11 +22,11 @@ public class TankClient extends Frame {
 		g.drawString("missile count:" + missile.size(), 40, 40);
 		for(int i =0; i < missile.size(); i++) {
 			Missile m = missile.get(i);
+			m.hitTank(enemy);
 			m.draw(g);
 		}
 		myTank.draw(g);
 		enemy.draw(g);
-		if(m != null) m.draw(g);
 	}
     
 	 
