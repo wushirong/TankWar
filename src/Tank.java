@@ -2,24 +2,65 @@ import java.awt.*;
 import java.awt.event.*;
 public class Tank {
 	int x, y;
+	public static final int width = 20;
+	public static final int height = 20;
 	public static final int XSPEED = 5;
 	public static final int YSPEED = 5;
+	TankClient tc = null;
 	private boolean bL = false, bU = false, bR = false, bD = false;
+	private boolean good;
 	enum Direction {L, R, U, D, UL, UR, DL, DR, STOP};
 	
 	private Direction dir= Direction.STOP;
+	private Direction barrel = Direction.D;
 	
-	public Tank(int x, int y) {
+	public Tank(int x, int y, boolean good) {
 		this.x = x;
 		this.y = y;
+		this.good = good;
+	}
+	
+	public Tank(int x, int y, boolean good, TankClient tc) {
+		this(x, y, good);
+		this.tc = tc;
 	}
 	
 	public void draw(Graphics g) {
 		Color c = g.getColor();
 		g.setColor(Color.RED); 
-		g.fillOval(x, y , 50, 50);
+		g.fillOval(x, y , Tank.width, Tank.height);
 		g.setColor(c);
+		
+		switch(barrel) {
+		case L:
+			 g.drawLine(x + Tank.width/2, y + Tank.height/2, x, y + Tank.height/2);
+			 break;
+		 case R:
+			 g.drawLine(x + Tank.width/2, y + Tank.height/2, x + Tank.width, y + Tank.height/2);
+			 break;
+		 case U:
+			 g.drawLine(x + Tank.width/2, y + Tank.height/2, x + Tank.width/2, y);
+			 break;
+		 case D:
+			 g.drawLine(x + Tank.width/2, y + Tank.height/2, x + Tank.width/2, y + Tank.width);
+			 break;
+		 case UL:
+			 g.drawLine(x + Tank.width/2, y + Tank.height/2, x, y);
+			 break;
+		 case UR:
+			 g.drawLine(x + Tank.width/2, y + Tank.height/2, x + Tank.width, y);
+			 break;
+		 case DL:
+			 g.drawLine(x + Tank.width/2, y + Tank.height/2, x, y + Tank.height);
+			 break;
+		 case DR:
+			 g.drawLine(x + Tank.width/2, y + Tank.height/2, x + Tank.width, y + Tank.height);
+			 break;
+		 case STOP:
+			 break;
+		}
 		move();
+		if(this.dir != Direction.STOP) barrel = this.dir;
 	}
 	
 	protected void move() {
@@ -47,7 +88,7 @@ public class Tank {
 		 case DL:
 			 y += YSPEED;
 			 x -= XSPEED;
-			 break;
+ 			 break;
 		 case DR:
 			 y += YSPEED;
 			 x += XSPEED;
@@ -55,6 +96,10 @@ public class Tank {
 		 case STOP:
 			 break;
 		 }
+		 if(x < 0) x = 0;
+		 if(y < 20) y = 20;
+		 if(x + Tank.width > TankClient.GAME_WIDTH) x = TankClient.GAME_WIDTH - Tank.width;
+		 if(y + Tank.height > TankClient.GAME_HEIGHT) y = TankClient.GAME_HEIGHT - Tank.height;
 	}
 	
 	public void KeyPressed(KeyEvent e) {
@@ -91,6 +136,9 @@ public class Tank {
 	public void KeyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 		switch(key) {
+		case KeyEvent.VK_CONTROL:
+			tc.m = fire();
+			break;
 		case KeyEvent.VK_RIGHT:
 			bR = false;
 			break;
@@ -99,11 +147,17 @@ public class Tank {
 			break;
 		case KeyEvent.VK_UP: 
 			bU = false;
-			break;
+			break; 
 		case KeyEvent.VK_DOWN: 
 			bD = false;
 			break;
 		}
 		locateDirection();
+	}
+	
+	public Missile fire() {
+		Missile m = new Missile(x + Tank.width/2, y + Tank.height/2, barrel, tc);
+		tc.missile.add(m);
+		return m;
 	}
 }
