@@ -30,7 +30,11 @@ public class Tank {
 	}
 	
 	public void draw(Graphics g) {
-		if(!live) return;
+		if(!live) {
+			if(! good) tc.enemy.remove(this);
+			else return;
+		}
+		
 		 
 		Color c = g.getColor();
 		if(good) g.setColor(Color.RED); 

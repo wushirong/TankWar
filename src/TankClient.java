@@ -14,7 +14,8 @@ public class TankClient extends Frame {
 	List<Missile> missile = new ArrayList<Missile>();
 	
 	Tank myTank = new Tank(50, 50, true, this);
-	Tank enemy = new Tank(200, 200, false, this);
+	List<Tank> enemy = new ArrayList<Tank>();
+	//Tank enemy = new Tank(200, 200, false, this);
 	
 	Missile m;
 	List<Explode> explodes = new ArrayList<Explode>();
@@ -22,13 +23,17 @@ public class TankClient extends Frame {
 	 
 	public void paint(Graphics g) {
 		g.drawString("missile count:" + missile.size(), 40, 40);
+		for(int i = 0; i < enemy.size(); i++) {
+			Tank t = enemy.get(i);
+			t.draw(g);
+		}
 		for(int i =0; i < missile.size(); i++) {
 			Missile m = missile.get(i);
-			m.hitTank(enemy);
+			m.hitTanks(enemy);
 			m.draw(g);
 		}
 		myTank.draw(g);
-		enemy.draw(g);
+
 		for(int i = 0; i < explodes.size(); i++) {
 			Explode e = explodes.get(i);
 			e.draw(g);
@@ -51,7 +56,11 @@ public class TankClient extends Frame {
 	}
 
 	public void lauchFrame() {
-		this.setLocation(400, 300);
+		for(int i = 0; i < 10; i++) {
+			enemy.add(new Tank(200+40*i, 150, false, this));
+		}
+		
+		//this.setLocation(400, 300);
 		this.setSize(GAME_WIDTH, GAME_HEIGHT);
 		this.setName("TankWar");
 		this.addWindowListener(new WindowAdapter() {

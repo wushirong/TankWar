@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.List;
 
 
 public class Missile {
@@ -90,10 +91,18 @@ public class Missile {
 			this.live = false;   
 			Explode e = new Explode(x, y, tc);
 			tc.explodes.add(e);
+			
 			return true;
 		}
 		
 		return false; 
+	}
+	
+	public boolean hitTanks(List<Tank> tank) {
+		for(int i = 0; i < tank.size(); i++){
+			if(hitTank(tank.get(i))) return true;
+		}
+		return false;
 	}
 	
 	public boolean isLive() {
