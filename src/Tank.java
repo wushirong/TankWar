@@ -12,6 +12,12 @@ public class Tank {
 	
 	private boolean bL = false, bU = false, bR = false, bD = false;
 	private boolean good;
+	
+	public boolean isGood() {
+		return good;
+	}
+
+
 	private boolean live = true ;
 	private Direction dt;
 	private int steps = r.nextInt(12) + 3;
@@ -126,6 +132,9 @@ public class Tank {
 				 dir = dirs[rn];
 			 }
 			 steps--;
+			 if(r.nextInt(40) > 38) {
+				 this.fire();
+			 }
 		 }
 	}
 	
@@ -183,7 +192,8 @@ public class Tank {
 	}
 	
 	public Missile fire() {
-		Missile m = new Missile(x + Tank.width/2, y + Tank.height/2, barrel, tc);
+		if(!live) return null;
+		Missile m = new Missile(x + Tank.width/2, y + Tank.height/2, barrel, this.isGood(), tc);
 		tc.missile.add(m);
 		return m;
 	}
