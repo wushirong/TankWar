@@ -15,7 +15,9 @@ public class TankClient extends Frame {
 	
 	Tank myTank = new Tank(50, 50, true, this);
 	Tank enemy = new Tank(200, 200, false, this);
+	
 	Missile m;
+	List<Explode> explodes = new ArrayList<Explode>();
 	Image offScreenImage = null;
 	 
 	public void paint(Graphics g) {
@@ -27,6 +29,10 @@ public class TankClient extends Frame {
 		}
 		myTank.draw(g);
 		enemy.draw(g);
+		for(int i = 0; i < explodes.size(); i++) {
+			Explode e = explodes.get(i);
+			e.draw(g);
+		}
 	}
     
 	 

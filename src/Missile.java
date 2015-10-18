@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 
 
 public class Missile {
+
 	int x, y;
 	public static final int radius = 10;
 	public static final int XSPEED = 10;
@@ -87,8 +88,11 @@ public class Missile {
 		if(this.getRect().intersects(t.getRect()) && t.isLive()) {
 			t.setLive(false);
 			this.live = false;   
+			Explode e = new Explode(x, y, tc);
+			tc.explodes.add(e);
 			return true;
 		}
+		
 		return false; 
 	}
 	
@@ -96,3 +100,4 @@ public class Missile {
 		return live;
 	}
 }
+  
