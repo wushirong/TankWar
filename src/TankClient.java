@@ -7,13 +7,14 @@ import java.awt.event.*;
 
 
 
+
 public class TankClient extends Frame {
 	public static final int GAME_WIDTH = 800;
 	public static final int GAME_HEIGHT = 600;
 	
 	List<Missile> missile = new ArrayList<Missile>();
 	
-	Tank myTank = new Tank(50, 50, true, this);
+	Tank myTank = new Tank(50, 50, true, Tank.Direction.D, this);
 	List<Tank> enemy = new ArrayList<Tank>();
 	//Tank enemy = new Tank(200, 200, false, this);
 	
@@ -57,7 +58,7 @@ public class TankClient extends Frame {
 
 	public void lauchFrame() {
 		for(int i = 0; i < 10; i++) {
-			enemy.add(new Tank(200+40*i, 150, false, this));
+			enemy.add(new Tank(200+40*i, 150, false, Tank.Direction.D, this));
 		}
 		
 		//this.setLocation(400, 300);

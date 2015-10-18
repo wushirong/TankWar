@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Random;
 public class Tank {
 	int x, y;
 	public static final int width = 20;
@@ -12,9 +13,13 @@ public class Tank {
 	private boolean bL = false, bU = false, bR = false, bD = false;
 	private boolean good;
 	private boolean live = true ;
+	private Direction dt;
+	private int steps = r.nextInt(12) + 3;
 	
 	enum Direction {L, R, U, D, UL, UR, DL, DR, STOP};
 	
+	
+	private static Random r = new Random();
 	private Direction dir= Direction.STOP;
 	private Direction barrel = Direction.D;
 	
@@ -24,8 +29,9 @@ public class Tank {
 		this.good = good;
 	}
 	
-	public Tank(int x, int y, boolean good, TankClient tc) {
+	public Tank(int x, int y, boolean good, Direction dir, TankClient tc) {
 		this(x, y, good);
+		this.dir = dir;
 		this.tc = tc;
 	}
 	
@@ -111,6 +117,16 @@ public class Tank {
 		 if(y < 20) y = 20;
 		 if(x + Tank.width > TankClient.GAME_WIDTH) x = TankClient.GAME_WIDTH - Tank.width;
 		 if(y + Tank.height > TankClient.GAME_HEIGHT) y = TankClient.GAME_HEIGHT - Tank.height;
+	
+		 if(!good) {
+			 if(steps == 0) {
+				 steps = r.nextInt(12) + 3;
+				 Direction[] dirs = Direction.values();
+				 int rn = r.nextInt(dirs.length);
+				 dir = dirs[rn];
+			 }
+			 steps--;
+		 }
 	}
 	
 	public void KeyPressed(KeyEvent e) {
